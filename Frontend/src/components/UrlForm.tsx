@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Grid } from "@mui/material";
-import { shortenURL } from "../../../LoggingMiddleware/utils/api";
+import { generateShortcode } from "../../../LoggingMiddleware/utils/shortcode";
 
 interface Props {
   onShorten: (original: string, short: string) => void;
@@ -9,19 +9,25 @@ interface Props {
 export default function UrlForm({ onShorten }: Props) {
   const [url, setUrl] = useState("");
   const [shortcode, setShortcode] = useState("");
-  const [validity, setValidity] = useState<number>(30);
+  const [validity, setValidity] = useState<number>(30); // in minutes
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const data = await shortenURL(url, shortcode, validity);
-      onShorten(url, data.shortenedUrl || "unknown");
-      setUrl("");
-      setShortcode("");
-      setValidity(30);
-    } catch (err) {
-      alert("Failed to shorten URL.");
-    }
+
+    const code = shortcode || generateShortcode();
+    const shortUrl = `${window.location.origin}/#/${code}`;
+
+    // Save to localStorage with expiry
+    const expiresAt = Date.now() + validity * 60 * 1000;
+    localStorage.setItem(
+      code,
+      JSON.stringify({ url, expiresAt })
+    );
+
+    onShorten(url, shortUrl);
+    setUrl("");
+    setShortcode("");
+    setValidity(30);
   };
 
   return (
@@ -31,9 +37,9 @@ export default function UrlForm({ onShorten }: Props) {
           <TextField
             label="Original URL"
             fullWidth
+            required
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            required
           />
         </Grid>
         <Grid item xs={6}>
@@ -47,14 +53,14 @@ export default function UrlForm({ onShorten }: Props) {
         <Grid item xs={6}>
           <TextField
             label="Validity (minutes)"
-            fullWidth
             type="number"
+            fullWidth
             value={validity}
             onChange={(e) => setValidity(Number(e.target.value))}
           />
         </Grid>
         <Grid item xs={12}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button type="submit" variant="contained" color="primary">
             Shorten URL
           </Button>
         </Grid>

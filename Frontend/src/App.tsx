@@ -6,8 +6,8 @@ export default function App() {
   return (
     <Container maxWidth="md">
       <Box mt={5}>
-        <Typography variant="h3" align="center" gutterBottom>
-          URL Shortener
+        <Typography variant="h4" align="center" gutterBottom>
+          URL Shortener (Frontend Only)
         </Typography>
         <Home />
       </Box>
