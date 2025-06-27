@@ -38,6 +38,11 @@ yarn dev
 -- The app is refreshed
 -- (Optional) Expiration time has passed
 
+## Sample ScreenShots
+<img width="1327" alt="Screenshot 2025-06-27 at 3 52 37 PM" src="https://github.com/user-attachments/assets/2de241fb-1504-4f13-96ee-5553baf12782" />
+<img width="1327" alt="Screenshot 2025-06-27 at 3 53 20 PM" src="https://github.com/user-attachments/assets/44c5ff0d-5f5f-47a9-a4fc-30eff88b388a" />
+
+
 ## Built With
 React + TypeScript
 Vite
