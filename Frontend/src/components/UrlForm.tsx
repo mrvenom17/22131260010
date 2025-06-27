@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Grid } from "@mui/material";
-import { shortenURL } from "../../LoggingMiddleware/utils/api";
+import { shortenURL } from "../../../LoggingMiddleware/utils/api";
 
 interface Props {
   onShorten: (original: string, short: string) => void;
